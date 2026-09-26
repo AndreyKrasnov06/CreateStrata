@@ -16,9 +16,10 @@ Create: Strata is an add-on for the Create mod that overhauls ore generation to 
 * **Localization:** Fully translated into English (`en_us`) and Russian (`ru_ru`).
 
 ### Customization
-Create: Strata is completely data-driven. Veins can be added or modified via datapacks.
+Create: Strata is completely data-driven. Veins can be added or modified via datapacks. To add a new vein, you must create three files:
 
-**Example (`data/your_namespace/worldgen/configured_feature/my_new_vein.json`):**
+**1. Configured Feature (`data/your_namespace/worldgen/configured_feature/my_new_vein.json`):**
+Defines the shape, rarity, and internal mechanics.
 ```json
 {
   "type": "createstrata:pipe_vein",
@@ -44,11 +45,33 @@ Create: Strata is completely data-driven. Veins can be added or modified via dat
 ```
 *Note:* The `color` defines the dot color on the Mechanical Radar. `display_name` will be used as a translation key (e.g., in your resource pack), or as raw fallback text if no translation is found.
 
+**2. Placed Feature (`data/your_namespace/worldgen/placed_feature/my_new_vein_placed.json`):**
+Required by Vanilla Minecraft to process the feature.
+```json
+{
+  "feature": "your_namespace:my_new_vein",
+  "placement": [
+    { "type": "minecraft:count", "count": 1 },
+    { "type": "minecraft:in_square" },
+    { "type": "minecraft:biome" }
+  ]
+}
+```
+
+**3. Biome Modifier (`data/your_namespace/neoforge/biome_modifier/add_my_new_vein.json`):**
+Instructs NeoForge to inject your vein into the world generation step.
+```json
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "your_namespace:my_new_vein_placed",
+  "step": "underground_ores"
+}
+```
+
 ### Dependencies
 * NeoForge `1.21.1`
 * Create
-* Flywheel
-* Ponder
 
 ---
 
@@ -64,9 +87,10 @@ Create: Strata — это дополнение для мода Create, кото�
 * **Локализация:** Полный перевод на английский (`en_us`) и русский (`ru_ru`) языки.
 
 ### Кастомизация
-Мод Create: Strata полностью управляется данными (Data-Driven). Новые жилы можно добавлять или изменять через обычные датапаки.
+Мод Create: Strata полностью управляется данными (Data-Driven). Чтобы добавить новую жилу через датапак, необходимо создать три файла:
 
-**Пример (`data/ваш_namespace/worldgen/configured_feature/my_new_vein.json`):**
+**1. Configured Feature (`data/ваш_namespace/worldgen/configured_feature/my_new_vein.json`):**
+Задаёт форму, редкость, климат и внутренние механики руды.
 ```json
 {
   "type": "createstrata:pipe_vein",
@@ -92,8 +116,30 @@ Create: Strata — это дополнение для мода Create, кото�
 ```
 *Примечание:* Параметр `color` задаёт цвет точки на Механическом радаре. `display_name` используется как ключ перевода (добавляется через ресурспак) или выводится как готовый текст, если перевод не найден.
 
+**2. Placed Feature (`data/ваш_namespace/worldgen/placed_feature/my_new_vein_placed.json`):**
+Требуется движку ванильного Minecraft для обработки процесса генерации.
+```json
+{
+  "feature": "ваш_namespace:my_new_vein",
+  "placement": [
+    { "type": "minecraft:count", "count": 1 },
+    { "type": "minecraft:in_square" },
+    { "type": "minecraft:biome" }
+  ]
+}
+```
+
+**3. Biome Modifier (`data/ваш_namespace/neoforge/biome_modifier/add_my_new_vein.json`):**
+Указывает загрузчику NeoForge добавить вашу жилу в этап генерации мира.
+```json
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "ваш_namespace:my_new_vein_placed",
+  "step": "underground_ores"
+}
+```
+
 ### Зависимости
 * NeoForge `1.21.1`
 * Create
-* Flywheel
-* Ponder
