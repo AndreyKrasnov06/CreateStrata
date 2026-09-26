@@ -1,6 +1,8 @@
-# Create: Strata
+<h1 align="center">Create: Strata</h1>
 
-[🇬🇧 English](#-english) | [🇷🇺 Русский](#-русский)
+<p align="center">
+  <a href="#-english">🇬🇧 English</a> | <a href="#-русский">🇷🇺 Русский</a>
+</p>
 
 <a name="-english"></a>
 ## 🇬🇧 English
