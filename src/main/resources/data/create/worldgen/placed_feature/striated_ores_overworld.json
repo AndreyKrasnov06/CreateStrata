@@ -1,0 +1,9 @@
+{
+  "feature": "create:striated_ores_overworld",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 0
+    }
+  ]
+}

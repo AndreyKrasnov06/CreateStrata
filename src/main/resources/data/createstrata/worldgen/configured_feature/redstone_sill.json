@@ -1,0 +1,27 @@
+{
+  "type": "createstrata:disc_vein",
+  "config": {
+    "radius": 24,
+    "height": 4,
+    "density": 0.45,
+    "rarity": 400,
+    "max_tilt": 20.0,
+    "min_y": -1.00,
+    "max_y": -0.30,
+    "min_temp": 0.60,
+    "max_temp": 2.00,
+    "min_moisture": 0.70,
+    "max_moisture": 1.00,
+    "color": "#FF3333",
+    "display_name": "createstrata.vein.redstone",
+    "targets": [
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:redstone_ore" }, "weight": 90.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:deepslate_redstone_ore" }, "weight": 90.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:redstone_block" }, "weight": 10.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:redstone_block" }, "weight": 10.0 }
+    ]
+  }
+}
+
+
+

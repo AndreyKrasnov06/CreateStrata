@@ -1,0 +1,27 @@
+{
+  "type": "createstrata:pipe_vein",
+  "config": {
+    "radius": 12,
+    "height": 45,
+    "density": 0.15,
+    "rarity": 1000,
+    "max_tilt": 5.0,
+    "min_y": -1.00,
+    "max_y": -0.10,
+    "min_temp": -2.00,
+    "max_temp": 2.00,
+    "min_moisture": 0.00,
+    "max_moisture": 1.00,
+    "color": "#33FFFF",
+    "display_name": "createstrata.vein.diamond",
+    "targets": [
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:diamond_ore" }, "weight": 97.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:deepslate_diamond_ore" }, "weight": 97.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:diamond_block" }, "weight": 3.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:diamond_block" }, "weight": 3.0 }
+    ]
+  }
+}
+
+
+

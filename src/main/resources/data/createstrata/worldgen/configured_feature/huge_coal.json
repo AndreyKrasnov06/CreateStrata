@@ -1,0 +1,27 @@
+{
+  "type": "createstrata:disc_vein",
+  "config": {
+    "radius": 32,
+    "height": 5,
+    "density": 0.55,
+    "rarity": 350,
+    "max_tilt": 25.0,
+    "min_y": -0.50,
+    "max_y": 0.80,
+    "min_temp": 0.60,
+    "max_temp": 2.00,
+    "min_moisture": 0.70,
+    "max_moisture": 1.00,
+    "color": "#333333",
+    "display_name": "createstrata.vein.coal",
+    "targets": [
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:coal_ore" }, "weight": 90.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:deepslate_coal_ore" }, "weight": 90.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:coal_block" }, "weight": 10.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:coal_block" }, "weight": 10.0 }
+    ]
+  }
+}
+
+
+

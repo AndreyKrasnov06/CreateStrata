@@ -1,0 +1,24 @@
+{
+  "item.createstrata.mechanical_radar": "Механический радар",
+  "block.createstrata.mechanical_radar": "Механический радар",
+  
+  "gui.createstrata.radar.title": "Результаты сканирования",
+  "gui.createstrata.radar.no_power": "НЕТ ПИТАНИЯ (МАЛО RPM)",
+  "gui.createstrata.radar.scanning": "Сонар (Радиус: %s чанков)",
+  "gui.createstrata.radar.vein_format": "%s [%s, %s, %s]",
+  
+  "createstrata.vein.copper": "Медная жила",
+  "createstrata.vein.diamond": "Кимберлитовая трубка",
+  "createstrata.vein.emerald": "Изумрудная жила",
+  "createstrata.vein.gold": "Золотая жила",
+  "createstrata.vein.coal": "Угольный пласт",
+  "createstrata.vein.lapis": "Залежи лазурита",
+  "createstrata.vein.iron": "Массивная железная жила",
+  "createstrata.vein.redstone": "Пласт редстоуна",
+  
+  "commands.createstrata.locatevein.unknown_feature": "Неизвестная жила: %s",
+  "commands.createstrata.locatevein.not_custom_vein": "Не является пользовательской жилой: %s",
+  "commands.createstrata.locatevein.unsupported_feature": "Неподдерживаемый тип генерации жилы",
+  "commands.createstrata.locatevein.found": "Найдена %s на координатах [%s, %s, %s] (Дистанция: %s блоков).",
+  "commands.createstrata.locatevein.not_found": "Жила не найдена в радиусе поиска!"
+}

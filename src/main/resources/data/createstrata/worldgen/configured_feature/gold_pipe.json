@@ -1,0 +1,27 @@
+{
+  "type": "createstrata:pipe_vein",
+  "config": {
+    "radius": 5,
+    "height": 40,
+    "density": 0.40,
+    "rarity": 450,
+    "max_tilt": 30.0,
+    "min_y": -0.80,
+    "max_y": 0.10,
+    "min_temp": 1.00,
+    "max_temp": 2.00,
+    "min_moisture": 0.00,
+    "max_moisture": 1.00,
+    "color": "#FFD700",
+    "display_name": "createstrata.vein.gold",
+    "targets": [
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:gold_ore" }, "weight": 90.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:deepslate_gold_ore" }, "weight": 90.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:raw_gold_block" }, "weight": 10.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:raw_gold_block" }, "weight": 10.0 }
+    ]
+  }
+}
+
+
+

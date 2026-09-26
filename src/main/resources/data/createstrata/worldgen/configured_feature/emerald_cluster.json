@@ -1,0 +1,27 @@
+{
+  "type": "createstrata:cluster_vein",
+  "config": {
+    "radius": 6,
+    "height": 6,
+    "density": 0.70,
+    "rarity": 250,
+    "max_tilt": 0.0,
+    "min_y": 0.0,
+    "max_y": 0.8,
+    "min_temp": -2.00,
+    "max_temp": 0.25,
+    "min_moisture": 0.00,
+    "max_moisture": 1.00,
+    "color": "#33FF33",
+    "display_name": "createstrata.vein.emerald",
+    "targets": [
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:emerald_ore" }, "weight": 95.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:deepslate_emerald_ore" }, "weight": 95.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:emerald_block" }, "weight": 5.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:emerald_block" }, "weight": 5.0 }
+    ]
+  }
+}
+
+
+

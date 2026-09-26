@@ -1,0 +1,9 @@
+{
+  "feature": "create:striated_ores_nether",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 0
+    }
+  ]
+}

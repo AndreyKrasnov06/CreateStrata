@@ -1,0 +1,9 @@
+{
+  "feature": "oritech:uranium_patch",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 0
+    }
+  ]
+}

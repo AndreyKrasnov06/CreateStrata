@@ -1,0 +1,27 @@
+{
+  "type": "createstrata:cluster_vein",
+  "config": {
+    "radius": 20,
+    "height": 25,
+    "density": 0.45,
+    "rarity": 400,
+    "max_tilt": 45.0,
+    "min_y": -0.80,
+    "max_y": 0.40,
+    "min_temp": 0.30,
+    "max_temp": 0.80,
+    "min_moisture": 0.30,
+    "max_moisture": 1.00,
+    "color": "#D8AF93",
+    "display_name": "createstrata.vein.iron",
+    "targets": [
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:iron_ore" }, "weight": 85.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:deepslate_iron_ore" }, "weight": 85.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:raw_iron_block" }, "weight": 15.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:raw_iron_block" }, "weight": 15.0 }
+    ]
+  }
+}
+
+
+

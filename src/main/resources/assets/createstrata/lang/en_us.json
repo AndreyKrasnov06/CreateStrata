@@ -1,0 +1,24 @@
+{
+  "item.createstrata.mechanical_radar": "Mechanical Radar",
+  "block.createstrata.mechanical_radar": "Mechanical Radar",
+  
+  "gui.createstrata.radar.title": "Scan Results",
+  "gui.createstrata.radar.no_power": "NO POWER (LOW RPM)",
+  "gui.createstrata.radar.scanning": "Sonar (Radius: %s chunks)",
+  "gui.createstrata.radar.vein_format": "%s [%s, %s, %s]",
+  
+  "createstrata.vein.copper": "Copper Vein",
+  "createstrata.vein.diamond": "Diamond Kimberlite",
+  "createstrata.vein.emerald": "Emerald Cluster",
+  "createstrata.vein.gold": "Gold Vein",
+  "createstrata.vein.coal": "Coal Seam",
+  "createstrata.vein.lapis": "Lapis Lazuli Deposit",
+  "createstrata.vein.iron": "Massive Iron Vein",
+  "createstrata.vein.redstone": "Redstone Sill",
+  
+  "commands.createstrata.locatevein.unknown_feature": "Unknown configured feature: %s",
+  "commands.createstrata.locatevein.not_custom_vein": "Feature is not a Custom Vein: %s",
+  "commands.createstrata.locatevein.unsupported_feature": "Unsupported Vein Feature class",
+  "commands.createstrata.locatevein.found": "Found %s at [%s, %s, %s] (Distance: %s blocks).",
+  "commands.createstrata.locatevein.not_found": "No vein found within search radius!"
+}

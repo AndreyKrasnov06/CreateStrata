@@ -1,0 +1,27 @@
+{
+  "type": "createstrata:pipe_vein",
+  "config": {
+    "radius": 16,
+    "height": 70,
+    "density": 0.40,
+    "rarity": 500,
+    "max_tilt": 20.0,
+    "min_y": -0.90,
+    "max_y": -0.10,
+    "min_temp": 0.80,
+    "max_temp": 2.50,
+    "min_moisture": 0.00,
+    "max_moisture": 0.25,
+    "color": "#B87333",
+    "display_name": "createstrata.vein.copper",
+    "targets": [
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:copper_ore" }, "weight": 90.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:deepslate_copper_ore" }, "weight": 90.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:stone_ore_replaceables" }, "state": { "Name": "minecraft:raw_copper_block" }, "weight": 10.0 },
+      { "target": { "predicate_type": "minecraft:tag_match", "tag": "minecraft:deepslate_ore_replaceables" }, "state": { "Name": "minecraft:raw_copper_block" }, "weight": 10.0 }
+    ]
+  }
+}
+
+
+
