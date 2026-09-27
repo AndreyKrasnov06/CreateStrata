@@ -10,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 public class LocateVeinCommand {
 
@@ -65,11 +66,11 @@ public class LocateVeinCommand {
 
         long salt1 = 0, salt2 = 0, salt3 = 0;
         if (holder.feature() instanceof ClusterVeinFeature) {
-            salt1 = 812371813L; salt2 = 912381231L; salt3 = 0x1A2B3CL;
+            salt1 = 812371813L; salt2 = 912381231L; salt3 = config.getSalt();
         } else if (holder.feature() instanceof DiscVeinFeature) {
-            salt1 = 341873128712L; salt2 = 132897987541L; salt3 = 0x4D495343L;
+            salt1 = 341873128712L; salt2 = 132897987541L; salt3 = config.getSalt();
         } else if (holder.feature() instanceof PipeVeinFeature) {
-            salt1 = 123987123L; salt2 = 987123987L; salt3 = 0x6E7F8AL;
+            salt1 = 123987123L; salt2 = 987123987L; salt3 = config.getSalt();
         } else {
             source.sendFailure(Component.translatable("commands.createstrata.locatevein.unsupported_feature"));
             return 0;
@@ -107,6 +108,17 @@ public class LocateVeinCommand {
                             boolean moistPass = centerMoisture >= config.minMoisture() && centerMoisture <= config.maxMoisture();
                             
                             if (tempPass && moistPass) {
+                                int surfaceY = source.getLevel().getChunkSource().getGenerator().getBaseHeight(
+                                    centerX, centerZ, 
+                                    Heightmap.Types.WORLD_SURFACE_WG, 
+                                    source.getLevel(), 
+                                    source.getLevel().getChunkSource().randomState()
+                                );
+                                
+                                if (centerY > surfaceY) {
+                                    continue;
+                                }
+                                
                                 int distBlocks = (int) Math.sqrt(Math.pow(centerX - playerPos.getX(), 2) + Math.pow(centerZ - playerPos.getZ(), 2));
                                 
                                 source.sendSuccess(() -> Component.translatable(
@@ -124,4 +136,3 @@ public class LocateVeinCommand {
         return 0;
     }
 }
-

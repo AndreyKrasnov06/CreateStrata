@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -84,11 +85,11 @@ public class MechanicalRadarBlockEntity extends KineticBlockEntity {
                 
                 long salt1 = 0, salt2 = 0, salt3 = 0;
                 if (featureHolder.feature() instanceof ClusterVeinFeature) {
-                    salt1 = 812371813L; salt2 = 912381231L; salt3 = 0x1A2B3CL;
+                    salt1 = 812371813L; salt2 = 912381231L; salt3 = config.getSalt();
                 } else if (featureHolder.feature() instanceof DiscVeinFeature) {
-                    salt1 = 341873128712L; salt2 = 132897987541L; salt3 = 0x4D495343L;
+                    salt1 = 341873128712L; salt2 = 132897987541L; salt3 = config.getSalt();
                 } else if (featureHolder.feature() instanceof PipeVeinFeature) {
-                    salt1 = 123987123L; salt2 = 987123987L; salt3 = 0x6E7F8AL;
+                    salt1 = 123987123L; salt2 = 987123987L; salt3 = config.getSalt();
                 } else {
                     continue; 
                 }
@@ -125,6 +126,17 @@ public class MechanicalRadarBlockEntity extends KineticBlockEntity {
                                     if (actualMinY > actualMaxY) actualMinY = actualMaxY;
                                     int centerY = random.nextIntBetweenInclusive(actualMinY, actualMaxY);
                                     
+                                    int surfaceY = serverLevel.getChunkSource().getGenerator().getBaseHeight(
+                                        centerX, centerZ, 
+                                        Heightmap.Types.WORLD_SURFACE_WG, 
+                                        serverLevel, 
+                                        randomState
+                                    );
+                                    
+                                    if (centerY > surfaceY) {
+                                        continue;
+                                    }
+                                    
                                     lastScannedVeins.add(new RadarScanPayload.VeinPoint(
                                             new BlockPos(centerX, centerY, centerZ), 
                                             config.getParsedColor(),
@@ -149,4 +161,3 @@ public class MechanicalRadarBlockEntity extends KineticBlockEntity {
         }
     }
 }
-
