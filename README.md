@@ -119,7 +119,7 @@ There are three generation shapes available: **Pipes** (vertical columns), **Dis
 * `min_moisture` & `max_moisture`: Climate humidity/precipitation restrictions (from `0.0` to `1.0`).
 * `targets`: A weighted list array of blocks the vein is allowed to overwrite. Each object must contain `target` (the block or tag), `state` (resulting ore), and `weight` (ratio for this block if multiple match).
 * `color`: Hex color code (e.g., `#00FFFF`) representing how the vein appears on the Mechanical Radar limits.
-* `display_name`: A language mapping key (translated via Resource Pack) or raw text for fallback display in tooltips and `/locatevein`. **(Note: This field, combined with geometrical dimensions, is automatically evaluated into a unique placement seed under the hood, ensuring two different veins will never overlap on the same chunk).**
+* `display_name`: A language mapping key (translated via Resource Pack) or raw text for fallback display in tooltips and `/locatevein`. **(Note: The `display_name` field is also used as a random seed (salt) for generating ores. Do not use the exact same name and geometrical dimensions for different veins to avoid collisions and overlaps).**
 
 **2. Placed Feature (`data/your_namespace/worldgen/placed_feature/my_new_vein_placed.json`):**
 Required by Vanilla Minecraft to process the feature.
@@ -266,7 +266,7 @@ Create: Strata — это дополнение для мода Create, кото�
 * `min_moisture` и `max_moisture`: Ограничения влажности и осадков биома (от `0.0` до `1.0`).
 * `targets`: Взвешенный список (массив) блоков, в которых может заспавниться руда. Каждое условие содержит `target` (блок для замены или тег, например `minecraft:stone_ore_replaceables`), `state` (блок вашей руды) и `weight` (шанс, если совпало несколько блоков).
 * `color`: HEX-цвет (например, `#00FFFF`), которым жила нарисуется в Механическом Радаре.
-* `display_name`: Ключ локализации (добавляется через ресурспак) или готовый текст в качестве заглушки интерфейса и команды `/locatevein`. **(Важно: Этот текст совместно с геометрическими размерами жилы невидимо шифруется в уникальное математическое ядро, что полностью исключает шанс генерации двух разных руд в одном месте).**
+* `display_name`: Ключ локализации (добавляется через ресурспак) или готовый текст в качестве заглушки интерфейса и команды `/locatevein`. **(Важно: Поле `display_name` также используется как случайное число (соль) для генерации руд. Не используйте одинаковое название и геометрические размеры во избежание коллизий).**
 
 **2. Placed Feature (`data/ваш_namespace/worldgen/placed_feature/my_new_vein_placed.json`):**
 Требуется движку ванильного Minecraft для обработки процесса генерации.
