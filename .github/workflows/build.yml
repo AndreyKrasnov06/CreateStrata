@@ -5,6 +5,8 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Права для создания релиза
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,3 +25,18 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      # Сохраняем собранный мод как артефакт в экшенах
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Create-Strata-Mod
+          path: build/libs/*.jar
+          
+      # Автоматически создаем релиз, если пуш был с тегом 'v...' (например, v1.0.0)
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          files: build/libs/*.jar
+          generate_release_notes: true
