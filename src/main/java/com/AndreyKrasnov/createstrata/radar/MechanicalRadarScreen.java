@@ -11,7 +11,7 @@ public class MechanicalRadarScreen extends Screen {
     private final RadarScanPayload payload;
     private final int radarRadiusChunks;
     
-    private final float SCALE = 0.5f; 
+    private static final float SCALE = 0.5f; 
     
     public MechanicalRadarScreen(RadarScanPayload payload) {
         super(Component.translatable("gui.createstrata.radar.title"));
@@ -107,4 +107,3 @@ public class MechanicalRadarScreen extends Screen {
         return false;
     }
 }
-

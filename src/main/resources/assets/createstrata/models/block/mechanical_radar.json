@@ -1,0 +1,67 @@
+{
+    "parent": "minecraft:block/block",
+    "textures": {
+        "particle": "create:block/brass_casing",
+        "texture": "create:block/brass_casing",
+        "hole": "create:block/brass_gearbox"
+    },
+    "elements": [
+        {
+            "name": "MainVolume",
+            "from": [0, 0, 0],
+            "to": [16, 16, 15],
+            "faces": {
+                "north": {"texture": "#texture"},
+                "east": {"texture": "#texture"},
+                "south": {"texture": "#hole"},
+                "west": {"texture": "#texture"},
+                "up": {"texture": "#texture"},
+                "down": {"texture": "#texture"}
+            }
+        },
+        {
+            "name": "TopBorder",
+            "from": [0, 15, 15],
+            "to": [16, 16, 16],
+            "faces": {
+                "south": {"texture": "#texture"},
+                "up": {"texture": "#texture"},
+                "east": {"texture": "#texture"},
+                "west": {"texture": "#texture"},
+                "down": {"texture": "#texture"}
+            }
+        },
+        {
+            "name": "BottomBorder",
+            "from": [0, 0, 15],
+            "to": [16, 1, 16],
+            "faces": {
+                "south": {"texture": "#texture"},
+                "down": {"texture": "#texture"},
+                "east": {"texture": "#texture"},
+                "west": {"texture": "#texture"},
+                "up": {"texture": "#texture"}
+            }
+        },
+        {
+            "name": "LeftBorder",
+            "from": [0, 1, 15],
+            "to": [1, 15, 16],
+            "faces": {
+                "south": {"texture": "#texture"},
+                "west": {"texture": "#texture"},
+                "east": {"texture": "#texture"}
+            }
+        },
+        {
+            "name": "RightBorder",
+            "from": [15, 1, 15],
+            "to": [16, 15, 16],
+            "faces": {
+                "south": {"texture": "#texture"},
+                "east": {"texture": "#texture"},
+                "west": {"texture": "#texture"}
+            }
+        }
+    ]
+}

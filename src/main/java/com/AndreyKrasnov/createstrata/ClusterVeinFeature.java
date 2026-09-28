@@ -8,6 +8,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.BulkSectionAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.biome.Biome;
@@ -46,7 +47,7 @@ public class ClusterVeinFeature extends Feature<CustomVeinConfig> {
             for (int cellX = cellXBase - 1; cellX <= cellXBase + 1; cellX++) {
                 for (int cellZ = cellZBase - 1; cellZ <= cellZBase + 1; cellZ++) {
                     
-                    RandomSource cellRandom = RandomSource.create(worldSeed ^ (cellX * 812371813L) ^ (cellZ * 912381231L) ^ 0x1A2B3C);
+                    RandomSource cellRandom = RandomSource.create(worldSeed ^ (cellX * 812371813L) ^ (cellZ * 912381231L) ^ config.getSalt());
                     
                     int chunksInCell = cellSpanChunks * cellSpanChunks;
                     float cellChance = Math.min(1.0f, (float) chunksInCell / config.rarity()); 
@@ -74,18 +75,35 @@ public class ClusterVeinFeature extends Feature<CustomVeinConfig> {
                     if (actualMinY > actualMaxY) actualMinY = actualMaxY;
                     int centerY = cellRandom.nextIntBetweenInclusive(actualMinY, actualMaxY);
 
-                    int metaballCount = cellRandom.nextIntBetweenInclusive(3, 7);
+                    int surfaceY;
+                    if (level instanceof net.minecraft.server.level.WorldGenRegion region) {
+                        net.minecraft.world.level.levelgen.RandomState randomState = region.getLevel().getChunkSource().randomState();
+                        surfaceY = context.chunkGenerator().getBaseHeight(centerX, centerZ, Heightmap.Types.OCEAN_FLOOR_WG, region.getLevel(), randomState);
+                    } else {
+                        surfaceY = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, centerX, centerZ);
+                    }
+                    
+                    if (centerY > surfaceY) continue;
+
+                    int metaballCount = cellRandom.nextIntBetweenInclusive(6, 10);
                     float[] locMX = new float[metaballCount];
                     float[] locMY = new float[metaballCount];
                     float[] locMZ = new float[metaballCount];
                     float[] mRadiusSq = new float[metaballCount];
 
+                    float avgDim = (radiusX + radiusY) / 2.0f;
+
                     for (int i = 0; i < metaballCount; i++) {
-                        locMX[i] = (cellRandom.nextFloat() - 0.5f) * radiusX * 1.2f;
-                        locMY[i] = (cellRandom.nextFloat() - 0.5f) * radiusY * 1.2f;
-                        locMZ[i] = (cellRandom.nextFloat() - 0.5f) * radiusX * 1.2f;
-                        float r = ((float)(radiusX + radiusY) / 3.0f) * (0.5f + cellRandom.nextFloat() * 0.7f);
-                        mRadiusSq[i] = Math.max(1.0f, r * r);
+                        float uX = (cellRandom.nextFloat() - 0.5f) * 1.3f;
+                        float uY = (cellRandom.nextFloat() - 0.5f) * 1.3f;
+                        float uZ = (cellRandom.nextFloat() - 0.5f) * 1.3f;
+                        
+                        locMX[i] = uX * radiusX;
+                        locMY[i] = uY * radiusY;
+                        locMZ[i] = uZ * radiusX;
+                        
+                        float weight = avgDim * (0.15f + cellRandom.nextFloat() * 0.15f);
+                        mRadiusSq[i] = Math.max(1.0f, weight * weight);
                     }
 
                     float maxTilt = config.maxTilt() * (float)Math.PI / 180.0f;
@@ -108,31 +126,27 @@ public class ClusterVeinFeature extends Feature<CustomVeinConfig> {
                                 
                                 float rY1 = dy * cosP - dz * sinP;
                                 float rZ1 = dy * sinP + dz * cosP;
-                                float rX1 = dx;
-
-                                float localX = rX1 * cosR - rY1 * sinR;
-                                float localY = rX1 * sinR + rY1 * cosR;
-                                float localZ = rZ1;
+                                
+                                float localX = dx * cosR - rY1 * sinR;
+                                float localY = dx * sinR + rY1 * cosR;
                                 
                                 float metaDensitySum = 0.0f;
                                 for (int i = 0; i < metaballCount; i++) {
                                     float mdx = localX - locMX[i];
                                     float mdy = localY - locMY[i];
-                                    float mdz = localZ - locMZ[i];
+                                    float mdz = rZ1 - locMZ[i];
                                     float distSq = mdx*mdx + mdy*mdy + mdz*mdz;
                                     
                                     if (distSq < 1.0f) distSq = 1.0f;
                                     metaDensitySum += mRadiusSq[i] / distSq;
                                 }
                                 
-                                long posHash = (long)worldX * 3133742L + (long)worldY * 23423412L + (long)worldZ * 453123L;
-                                posHash ^= worldSeed;
-                                RandomSource bpRand = RandomSource.create(posHash);
+                                if (metaDensitySum >= 1.0f) {
+                                                                        
+                                    long posHash = (long)worldX * 3133742L + (long)worldY * 23423412L + (long)worldZ * 453123L;
+                                    posHash ^= worldSeed;
+                                    RandomSource bpRand = RandomSource.create(posHash);
 
-                                float isosurfaceThreshold = 1.0f + bpRand.nextFloat() * 0.4f;
-
-                                if (metaDensitySum >= isosurfaceThreshold) {
-                                    
                                     if (bpRand.nextFloat() > blockDensity) continue;
 
                                     mutablePos.set(worldX, worldY, worldZ);
@@ -175,4 +189,3 @@ public class ClusterVeinFeature extends Feature<CustomVeinConfig> {
         return placedAny;
     }
 }
-

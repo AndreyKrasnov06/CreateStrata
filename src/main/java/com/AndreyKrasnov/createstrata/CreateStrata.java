@@ -2,44 +2,34 @@ package com.AndreyKrasnov.createstrata;
 
 import com.AndreyKrasnov.createstrata.network.StrataPackets;
 import com.AndreyKrasnov.createstrata.radar.RadarRegistries;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 @Mod(CreateStrata.MOD_ID)
 public class CreateStrata {
     public static final String MOD_ID = "createstrata";
     
+    // Инициализация CreateRegistrate с привязкой по умолчанию к вкладке механизмов
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID)
+            .defaultCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);
+    
     public CreateStrata(IEventBus modEventBus) {
-        // Регистрируем генерацию мира
+        REGISTRATE.registerEventListeners(modEventBus);
+        
         ModRegistries.register(modEventBus);
         
-        // Регистрируем блоки и предметы нашего Create-Радара
-        RadarRegistries.register(modEventBus);
+        RadarRegistries.register();
         
-        // Подключаем сетевые пакеты для передачи скана Радара
         modEventBus.addListener(StrataPackets::onRegisterPayloads);
         
-        // Добавляем наш предмет в творческое меню
-        modEventBus.addListener(this::addCreative);
-        
         NeoForge.EVENT_BUS.addListener(this::onRegisterCommands);
-    }
-    
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        // Кладем радар во вкладку Редстоун Механизмов
-        if (event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
-            event.accept(RadarRegistries.MECHANICAL_RADAR_ITEM.get());
-        }
     }
     
     private void onRegisterCommands(RegisterCommandsEvent event) {
         LocateVeinCommand.register(event.getDispatcher());
     }
 }
-
-
-

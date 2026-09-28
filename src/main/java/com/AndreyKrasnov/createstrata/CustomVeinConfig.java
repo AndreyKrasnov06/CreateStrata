@@ -39,6 +39,12 @@ public record CustomVeinConfig(
                     Codec.STRING.optionalFieldOf("color", "#55FF55").forGetter(CustomVeinConfig::colorHex),
                     Codec.STRING.optionalFieldOf("display_name", "Жила").forGetter(CustomVeinConfig::displayName)
             ).apply(instance, CustomVeinConfig::new));
+
+    public long getSalt() {
+        String hashString = displayName + "_" + radius + "_" + height + "_" + rarity;
+        net.minecraft.world.level.levelgen.RandomSupport.Seed128bit seed128 = net.minecraft.world.level.levelgen.RandomSupport.seedFromHashOf(hashString);
+        return seed128.seedLo() ^ seed128.seedHi();
+    }
             
     public int getAbsoluteMinY(net.minecraft.world.level.LevelHeightAccessor level) {
         return convertNormalizedToAbsolute(minY, level);
@@ -68,4 +74,3 @@ public record CustomVeinConfig(
         }
     }
 }
-

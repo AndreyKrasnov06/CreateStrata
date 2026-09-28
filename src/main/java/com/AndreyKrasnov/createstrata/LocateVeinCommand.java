@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.biome.Biome;
 
 public class LocateVeinCommand {
 
@@ -79,6 +80,10 @@ public class LocateVeinCommand {
         int maxSearchRadius = 100; 
         int chunksInCell = cellSpanChunks * cellSpanChunks;
         float cellChance = Math.min(1.0f, (float) chunksInCell / rarity);
+        
+        var serverLevel = source.getLevel();
+        var randomState = serverLevel.getChunkSource().randomState();
+        var biomeSource = serverLevel.getChunkSource().getGenerator().getBiomeSource();
 
         for (int r = 0; r <= maxSearchRadius; r++) {
             for (int dx = -r; dx <= r; dx++) {
@@ -93,13 +98,12 @@ public class LocateVeinCommand {
                             int centerX = (cellX * cellSpanChunks * 16) + random.nextInt(cellSpanChunks * 16);
                             int centerZ = (cellZ * cellSpanChunks * 16) + random.nextInt(cellSpanChunks * 16);
                             
-                            int actualMinY = Math.max(source.getLevel().getMinBuildHeight() + maxBound, config.getAbsoluteMinY(source.getLevel()));
-                            int actualMaxY = Math.min(source.getLevel().getMaxBuildHeight() - maxBound, config.getAbsoluteMaxY(source.getLevel()));
+                            int actualMinY = Math.max(serverLevel.getMinBuildHeight() + maxBound, config.getAbsoluteMinY(serverLevel));
+                            int actualMaxY = Math.min(serverLevel.getMaxBuildHeight() - maxBound, config.getAbsoluteMaxY(serverLevel));
                             if (actualMinY > actualMaxY) actualMinY = actualMaxY;
                             int centerY = random.nextIntBetweenInclusive(actualMinY, actualMaxY);
                             
-                            BlockPos centerPos = new BlockPos(centerX, 64, centerZ);
-                            var biome = source.getLevel().getBiome(centerPos).value();
+                            Biome biome = biomeSource.getNoiseBiome(centerX >> 2, 64 >> 2, centerZ >> 2, randomState.sampler()).value();
                             
                             float centerTemp = biome.getBaseTemperature();
                             float centerMoisture = biome.getModifiedClimateSettings().downfall();
@@ -108,11 +112,11 @@ public class LocateVeinCommand {
                             boolean moistPass = centerMoisture >= config.minMoisture() && centerMoisture <= config.maxMoisture();
                             
                             if (tempPass && moistPass) {
-                                int surfaceY = source.getLevel().getChunkSource().getGenerator().getBaseHeight(
+                                int surfaceY = serverLevel.getChunkSource().getGenerator().getBaseHeight(
                                     centerX, centerZ, 
-                                    Heightmap.Types.WORLD_SURFACE_WG, 
-                                    source.getLevel(), 
-                                    source.getLevel().getChunkSource().randomState()
+                                    Heightmap.Types.OCEAN_FLOOR_WG, 
+                                    serverLevel, 
+                                    randomState
                                 );
                                 
                                 if (centerY > surfaceY) {

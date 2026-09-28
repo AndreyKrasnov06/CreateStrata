@@ -1,42 +1,31 @@
 package com.AndreyKrasnov.createstrata.radar;
 
-import com.AndreyKrasnov.createstrata.CreateStrata;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
+import com.simibubi.create.foundation.data.SharedProperties;
+import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.function.Supplier;
+import static com.AndreyKrasnov.createstrata.CreateStrata.REGISTRATE;
 
 public class RadarRegistries {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, CreateStrata.MOD_ID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, CreateStrata.MOD_ID);
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, CreateStrata.MOD_ID);
 
-    // Регистрируем блок радара, задаем базовые свойства (похожие на металл)
-    public static final Supplier<Block> MECHANICAL_RADAR = BLOCKS.register("mechanical_radar", 
-            () -> new MechanicalRadarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.METAL)
-                    .strength(3.0f, 6.0f)
-                    .requiresCorrectToolForDrops()));
+    public static final BlockEntry<MechanicalRadarBlock> MECHANICAL_RADAR = REGISTRATE
+            .block("mechanical_radar", MechanicalRadarBlock::new)
+            .initialProperties(SharedProperties::softMetal)
+            .properties(p -> p.mapColor(MapColor.METAL).strength(3.0f, 6.0f).requiresCorrectToolForDrops())
+            .item()
+            .build()
+            .register();
 
-    // Регистрируем предмет (BlockItem), чтобы радар можно было взять в руки и поставить
-    public static final Supplier<Item> MECHANICAL_RADAR_ITEM = ITEMS.register("mechanical_radar",
-            () -> new BlockItem(MECHANICAL_RADAR.get(), new Item.Properties()));
+    public static final BlockEntityEntry<MechanicalRadarBlockEntity> RADAR_BLOCK_ENTITY = REGISTRATE
+            .blockEntity("mechanical_radar", MechanicalRadarBlockEntity::new)
+            .visual(() -> OrientedRotatingVisual.of(AllPartialModels.SHAFT_HALF), false)
+            .validBlocks(MECHANICAL_RADAR)
+            .register();
 
-    // Регистрируем BlockEntity (Тайл-энтити). Даем ему знать, к какому блоку он привязан
-    public static final Supplier<BlockEntityType<MechanicalRadarBlockEntity>> RADAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("mechanical_radar",
-            () -> BlockEntityType.Builder.of(MechanicalRadarBlockEntity::new, MECHANICAL_RADAR.get()).build(null));
-
-    public static void register(IEventBus eventBus) {
-        BLOCKS.register(eventBus);
-        ITEMS.register(eventBus);
-        BLOCK_ENTITIES.register(eventBus);
+    public static void register() {
+        // Загрузка класса для инициализации регистров
     }
 }
-

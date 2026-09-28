@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "minecraft:block/iron_block" }
+    "facing=south": { "model": "createstrata:block/mechanical_radar" },
+    "facing=north": { "model": "createstrata:block/mechanical_radar", "y": 180 },
+    "facing=west": { "model": "createstrata:block/mechanical_radar", "y": 90 },
+    "facing=east": { "model": "createstrata:block/mechanical_radar", "y": 270 }
   }
 }

@@ -20,8 +20,8 @@ public class NormalizedHeightProvider extends HeightProvider {
     private final float max;
 
     public NormalizedHeightProvider(float min, float max) {
-        this.min = Math.max(-1.0f, Math.min(1.0f, min));
-        this.max = Math.max(-1.0f, Math.min(1.0f, max));
+        this.min = Mth.clamp(min, -1.0f, 1.0f);
+        this.max = Mth.clamp(max, -1.0f, 1.0f);
     }
 
     @Override
@@ -35,15 +35,13 @@ public class NormalizedHeightProvider extends HeightProvider {
     private int getAbsoluteY(float normValue, WorldGenerationContext context) {
         int minGenY = context.getMinGenY();
         int maxGenY = minGenY + context.getGenDepth();
-        int zeroY = 0;
         if (normValue >= 0) {
-            return zeroY + Math.round(normValue * (maxGenY - zeroY));
+            return Math.round(normValue * maxGenY);
         } else {
-            return zeroY - Math.round(Math.abs(normValue) * (zeroY - minGenY));
+            return -Math.round(Math.abs(normValue) * -minGenY);
         }
     }
 
     @Override
     public HeightProviderType<?> getType() { return ModRegistries.NORMALIZED_HEIGHT.get(); }
 }
-

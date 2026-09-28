@@ -46,7 +46,7 @@ public class DiscVeinFeature extends Feature<CustomVeinConfig> {
             for (int cellX = cellXBase - 1; cellX <= cellXBase + 1; cellX++) {
                 for (int cellZ = cellZBase - 1; cellZ <= cellZBase + 1; cellZ++) {
                     
-                    RandomSource cellRandom = RandomSource.create(worldSeed ^ (cellX * 341873128712L) ^ (cellZ * 132897987541L) ^ 0x4D495343);
+                    RandomSource cellRandom = RandomSource.create(worldSeed ^ (cellX * 341873128712L) ^ (cellZ * 132897987541L) ^ config.getSalt());
                     
                     int chunksInCell = cellSpanChunks * cellSpanChunks;
                     float cellChance = Math.min(1.0f, (float) chunksInCell / config.rarity()); 
@@ -152,4 +152,5 @@ public class DiscVeinFeature extends Feature<CustomVeinConfig> {
         return placedAny;
     }
 }
+
 

@@ -46,7 +46,7 @@ public class PipeVeinFeature extends Feature<CustomVeinConfig> {
             for (int cellX = cellXBase - 1; cellX <= cellXBase + 1; cellX++) {
                 for (int cellZ = cellZBase - 1; cellZ <= cellZBase + 1; cellZ++) {
                     
-                    RandomSource cellRandom = RandomSource.create(worldSeed ^ (cellX * 123987123L) ^ (cellZ * 987123987L) ^ 0x6E7F8A);
+                    RandomSource cellRandom = RandomSource.create(worldSeed ^ (cellX * 123987123L) ^ (cellZ * 987123987L) ^ config.getSalt());
                     
                     int chunksInCell = cellSpanChunks * cellSpanChunks;
                     float cellChance = Math.min(1.0f, (float) chunksInCell / config.rarity()); 
@@ -154,4 +154,5 @@ public class PipeVeinFeature extends Feature<CustomVeinConfig> {
         return placedAny;
     }
 }
+
 

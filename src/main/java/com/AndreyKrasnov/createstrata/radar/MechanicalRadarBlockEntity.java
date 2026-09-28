@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -24,18 +25,16 @@ import java.util.List;
 
 public class MechanicalRadarBlockEntity extends KineticBlockEntity {
     
-    private List<RadarScanPayload.VeinPoint> lastScannedVeins = new ArrayList<>();
+    private final List<RadarScanPayload.VeinPoint> lastScannedVeins = new ArrayList<>();
     private int currentRadiusChunks = 0;
 
-    public MechanicalRadarBlockEntity(BlockPos pos, BlockState state) {
-        super(RadarRegistries.RADAR_BLOCK_ENTITY.get(), pos, state);
+    public MechanicalRadarBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     @Override
     public float calculateStressApplied() {
-        float impact = 16.0f; 
-        this.lastStressApplied = impact;
-        return impact;
+        return 16.0f; 
     }
 
     @Override
@@ -83,7 +82,7 @@ public class MechanicalRadarBlockEntity extends KineticBlockEntity {
                 int cellSpanBlocks = cellSpanChunks * 16;
                 int rarity = config.rarity(); 
                 
-                long salt1 = 0, salt2 = 0, salt3 = 0;
+                long salt1, salt2, salt3;
                 if (featureHolder.feature() instanceof ClusterVeinFeature) {
                     salt1 = 812371813L; salt2 = 912381231L; salt3 = config.getSalt();
                 } else if (featureHolder.feature() instanceof DiscVeinFeature) {
@@ -128,7 +127,7 @@ public class MechanicalRadarBlockEntity extends KineticBlockEntity {
                                     
                                     int surfaceY = serverLevel.getChunkSource().getGenerator().getBaseHeight(
                                         centerX, centerZ, 
-                                        Heightmap.Types.WORLD_SURFACE_WG, 
+                                        Heightmap.Types.OCEAN_FLOOR_WG, 
                                         serverLevel, 
                                         randomState
                                     );
