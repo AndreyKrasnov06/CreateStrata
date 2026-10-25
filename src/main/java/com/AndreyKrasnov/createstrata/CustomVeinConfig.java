@@ -19,6 +19,7 @@ public record CustomVeinConfig(
         float maxTemp,
         float minMoisture,
         float maxMoisture,
+        float conicity,
         String colorHex,
         String displayName
 ) implements FeatureConfiguration {
@@ -36,6 +37,7 @@ public record CustomVeinConfig(
                     Codec.FLOAT.optionalFieldOf("max_temp", 3.0f).forGetter(CustomVeinConfig::maxTemp),
                     Codec.FLOAT.optionalFieldOf("min_moisture", 0.0f).forGetter(CustomVeinConfig::minMoisture),
                     Codec.FLOAT.optionalFieldOf("max_moisture", 1.0f).forGetter(CustomVeinConfig::maxMoisture),
+                    Codec.FLOAT.optionalFieldOf("conicity", 0.0f).forGetter(CustomVeinConfig::conicity),
                     Codec.STRING.optionalFieldOf("color", "#55FF55").forGetter(CustomVeinConfig::colorHex),
                     Codec.STRING.optionalFieldOf("display_name", "Жила").forGetter(CustomVeinConfig::displayName)
             ).apply(instance, CustomVeinConfig::new));

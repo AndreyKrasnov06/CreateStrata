@@ -1,11 +1,12 @@
 {
   "type": "createstrata:pipe_vein",
   "config": {
-    "radius": 12,
+    "radius": 50,
     "height": 45,
     "density": 0.15,
     "rarity": 1000,
     "max_tilt": 5.0,
+    "conicity": 1.0,
     "min_y": -1.00,
     "max_y": -0.10,
     "min_temp": -2.00,

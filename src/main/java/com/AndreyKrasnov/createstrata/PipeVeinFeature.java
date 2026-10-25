@@ -82,6 +82,12 @@ public class PipeVeinFeature extends Feature<CustomVeinConfig> {
                     float cosR = (float)Math.cos(roll);
                     float sinR = (float)Math.sin(roll);
 
+                    // Расчет множителей конусности
+                    float rawConicity = config.conicity();
+                    float conicity = Math.max(-1.0f, Math.min(1.0f, rawConicity));
+                    float bottomMult = 1.0f - Math.max(0.0f, conicity);
+                    float topMult = 1.0f - Math.max(0.0f, -conicity);
+
                     for (int lx = 0; lx < 16; lx++) {
                         for (int lz = 0; lz < 16; lz++) {
                             int worldX = (currentChunkX << 4) + lx;
@@ -103,14 +109,17 @@ public class PipeVeinFeature extends Feature<CustomVeinConfig> {
                                 if (localY >= -height && localY <= height) {
                                     
                                     float normalizedY = (localY + height) / (2.0f * height);
-                                    float effectiveRadius = radius * (0.2f + 0.8f * normalizedY);
+                                    
+                                    // Плавная интерполяция радиуса от низа до верха трубы в пределах заданного максимального радиуса
+                                    float effectiveRadius = radius * (bottomMult + (topMult - bottomMult) * normalizedY);
                                     
                                     long posHash = (long)worldX * 3133742L + (long)worldY * 23423412L + (long)worldZ * 453123L;
                                     posHash ^= worldSeed;
                                     RandomSource bpRand = RandomSource.create(posHash);
+                                    
                                     float jaggedRadiusSq = effectiveRadius * effectiveRadius - bpRand.nextFloat() * (effectiveRadius * effectiveRadius * 0.4f);
 
-                                    if (localX * localX + localZ * localZ <= jaggedRadiusSq) {
+                                    if (localX * localX + localZ * localZ <= Math.max(0, jaggedRadiusSq)) {
                                         if (bpRand.nextFloat() > density) continue;
 
                                         mutablePos.set(worldX, worldY, worldZ);
@@ -154,5 +163,3 @@ public class PipeVeinFeature extends Feature<CustomVeinConfig> {
         return placedAny;
     }
 }
-
-
