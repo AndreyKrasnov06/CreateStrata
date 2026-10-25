@@ -6,6 +6,7 @@ import com.AndreyKrasnov.createstrata.DiscVeinFeature;
 import com.AndreyKrasnov.createstrata.PipeVeinFeature;
 import com.AndreyKrasnov.createstrata.network.RadarScanPayload;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import dev.ryanhcode.sable.companion.SableCompanion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
@@ -56,6 +58,14 @@ public class MechanicalRadarBlockEntity extends KineticBlockEntity {
         }
     }
 
+    private BlockPos getGlobalRadarPos() {
+        if (level == null) {
+            return getBlockPos();
+        }
+        Vec3 projected = SableCompanion.INSTANCE.projectOutOfSubLevel(level, (net.minecraft.core.Position) Vec3.atCenterOf(getBlockPos()));
+        return BlockPos.containing(projected);
+    }
+
     private void performScan(float rpm) {
         this.currentRadiusChunks = Math.max(1, (int)(rpm / 16.0f));
         this.lastScannedVeins.clear();
@@ -66,7 +76,7 @@ public class MechanicalRadarBlockEntity extends KineticBlockEntity {
         RandomState randomState = serverLevel.getChunkSource().randomState();
         var registry = serverLevel.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
 
-        BlockPos radarPos = getBlockPos();
+        BlockPos radarPos = getGlobalRadarPos();
         int maxRadiusBlocks = currentRadiusChunks * 16;
         int maxScanX = radarPos.getX() + maxRadiusBlocks;
         int minScanX = radarPos.getX() - maxRadiusBlocks;
@@ -152,11 +162,12 @@ public class MechanicalRadarBlockEntity extends KineticBlockEntity {
 
     public void sendScanToPlayer(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
+            BlockPos globalPos = getGlobalRadarPos();
             if (currentRadiusChunks <= 0) {
-                PacketDistributor.sendToPlayer(serverPlayer, new RadarScanPayload(getBlockPos(), 0, new ArrayList<>()));
+                PacketDistributor.sendToPlayer(serverPlayer, new RadarScanPayload(globalPos, 0, new ArrayList<>()));
                 return;
             }
-            PacketDistributor.sendToPlayer(serverPlayer, new RadarScanPayload(getBlockPos(), currentRadiusChunks, lastScannedVeins));
+            PacketDistributor.sendToPlayer(serverPlayer, new RadarScanPayload(globalPos, currentRadiusChunks, lastScannedVeins));
         }
     }
 }

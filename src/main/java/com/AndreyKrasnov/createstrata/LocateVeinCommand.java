@@ -1,6 +1,7 @@
 package com.AndreyKrasnov.createstrata;
 
 import com.mojang.brigadier.CommandDispatcher;
+import dev.ryanhcode.sable.companion.SableCompanion;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -12,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.phys.Vec3;
 
 public class LocateVeinCommand {
 
@@ -56,16 +58,18 @@ public class LocateVeinCommand {
         int maxBound = (int) Math.ceil(maxDim * 1.5);
         int cellSpanChunks = Math.max(2, (maxBound / 16) + 2);
         
-        long worldSeed = source.getLevel().getSeed();
+        var serverLevel = source.getLevel();
+        long worldSeed = serverLevel.getSeed();
         
-        BlockPos playerPos = BlockPos.containing(source.getPosition());
+        Vec3 globalSourcePos = SableCompanion.INSTANCE.projectOutOfSubLevel(serverLevel, (net.minecraft.core.Position) source.getPosition());
+        BlockPos playerPos = BlockPos.containing(globalSourcePos);
         int playerChunkX = playerPos.getX() >> 4;
         int playerChunkZ = playerPos.getZ() >> 4;
         
         int startCellX = Math.floorDiv(playerChunkX, cellSpanChunks);
         int startCellZ = Math.floorDiv(playerChunkZ, cellSpanChunks);
 
-        long salt1 = 0, salt2 = 0, salt3 = 0;
+        long salt1, salt2, salt3;
         if (holder.feature() instanceof ClusterVeinFeature) {
             salt1 = 812371813L; salt2 = 912381231L; salt3 = config.getSalt();
         } else if (holder.feature() instanceof DiscVeinFeature) {
@@ -81,7 +85,6 @@ public class LocateVeinCommand {
         int chunksInCell = cellSpanChunks * cellSpanChunks;
         float cellChance = Math.min(1.0f, (float) chunksInCell / rarity);
         
-        var serverLevel = source.getLevel();
         var randomState = serverLevel.getChunkSource().randomState();
         var biomeSource = serverLevel.getChunkSource().getGenerator().getBiomeSource();
 
